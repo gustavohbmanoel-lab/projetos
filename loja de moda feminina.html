@@ -1,0 +1,590 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Seda</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,500&family=Work+Sans:wght@400;500;600&display=swap">
+<style>
+  /* Layout: full-bleed hero band, then a centered 1200px column holding an
+     asymmetric product grid (one tall feature tile beside stacked pairs) */
+  :root {
+    --bg: #faf6f1;
+    --surface: #f1e9df;
+    --surface-2: #e7dccd;
+    --fg: #241f1b;
+    --fg-soft: #5b534a;
+    --muted: #93897a;
+    --accent: #7c2d3a;
+    --accent-soft: #c99aa3;
+    --line: #ddd0bf;
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --sans: "Work Sans", -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1b1714;
+      --surface: #241f1b;
+      --surface-2: #2d2721;
+      --fg: #f3ece2;
+      --fg-soft: #cabfae;
+      --muted: #8f8577;
+      --accent: #e2a0ad;
+      --accent-soft: #6b3540;
+      --line: #3a332b;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1b1714;
+    --surface: #241f1b;
+    --surface-2: #2d2721;
+    --fg: #f3ece2;
+    --fg-soft: #cabfae;
+    --muted: #8f8577;
+    --accent: #e2a0ad;
+    --accent-soft: #6b3540;
+    --line: #3a332b;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 500; margin: 0; text-wrap: balance; }
+  p { margin: 0; line-height: 1.6; }
+  a { color: inherit; }
+  img, [style*="aspect-ratio"] { max-width: 100%; }
+
+  .wrap { max-width: 1180px; margin: 0 auto; }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0 0 auto;
+    height: env(safe-area-inset-top, 0px);
+    z-index: 10;
+    background: var(--bg);
+  }
+  .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-block: 20px;
+    flex-wrap: wrap;
+  }
+  .logo {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+  }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-soft);
+    flex-wrap: wrap;
+  }
+  .nav-links a { text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a:focus-visible { color: var(--accent); }
+  .nav-cta {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-soft);
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    padding-block: 64px 56px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: block;
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero p {
+    margin-top: 20px;
+    max-width: 46ch;
+    color: var(--fg-soft);
+    font-size: 1.05rem;
+  }
+  .hero-actions {
+    margin-top: 32px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border-radius: 999px;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: var(--bg);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.15s, opacity 0.15s;
+  }
+  .btn:hover, .btn:focus-visible { opacity: 0.88; transform: translateY(-1px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover, .btn-ghost:focus-visible { border-color: var(--accent); color: var(--accent); }
+
+  /* hero garment illustration */
+  .hero-art {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: 18px;
+    overflow: hidden;
+    background: linear-gradient(165deg, var(--surface-2), var(--surface));
+    border: 1px solid var(--line);
+  }
+  .hero-art svg { width: 100%; height: 100%; display: block; }
+
+  /* ---------- section headings ---------- */
+  .section-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+  .section-head h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); }
+  .section-head .count {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  section { padding-block: 56px; }
+  section.divide { border-top: 1px solid var(--line); }
+
+  /* ---------- product grid ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-art {
+    aspect-ratio: 3 / 4;
+    position: relative;
+  }
+  .card-art svg { width: 100%; height: 100%; display: block; }
+  .card-body {
+    padding: 16px 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+  }
+  .card-kind {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .card-name { font-family: var(--serif); font-size: 1.15rem; }
+  .card-foot {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 10px;
+  }
+  .price { font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+  .wish {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: transparent;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: var(--fg-soft);
+    flex-shrink: 0;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .wish:hover, .wish:focus-visible, .wish[aria-pressed="true"] {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .wish[aria-pressed="true"] svg { fill: var(--accent); }
+
+  /* ---------- editorial / about band ---------- */
+  .band {
+    background: var(--surface);
+    border-radius: 20px;
+    padding: 48px clamp(24px, 5vw, 64px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .band h2 { font-size: clamp(1.7rem, 3.4vw, 2.3rem); margin-bottom: 18px; }
+  .band p { color: var(--fg-soft); max-width: 48ch; }
+  .band-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 28px;
+  }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 1.8rem;
+    color: var(--accent);
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .band-art { aspect-ratio: 1; border-radius: 14px; overflow: hidden; background: var(--surface-2); border: 1px solid var(--line); }
+  .band-art svg { width: 100%; height: 100%; display: block; }
+
+  /* ---------- lookbook strip ---------- */
+  .strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .strip-item {
+    aspect-ratio: 3 / 4;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    position: relative;
+  }
+  .strip-item svg { width: 100%; height: 100%; display: block; }
+  .strip-cap {
+    position: absolute;
+    left: 16px;
+    bottom: 14px;
+    color: #fff;
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  }
+
+  /* ---------- newsletter ---------- */
+  .news {
+    text-align: center;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+  .news h2 { font-size: clamp(1.6rem, 3vw, 2rem); margin-bottom: 12px; }
+  .news p { color: var(--fg-soft); margin-bottom: 28px; }
+  .news-form {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .news-form input {
+    flex: 1;
+    min-width: 220px;
+    padding: 14px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--fg);
+    font-family: var(--sans);
+    font-size: 0.95rem;
+  }
+  .news-form input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .news-note { margin-top: 14px; font-size: 0.82rem; color: var(--muted); min-height: 1.2em; }
+
+  /* ---------- footer ---------- */
+  footer {
+    border-top: 1px solid var(--line);
+    padding-block: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+  .foot-links { display: flex; gap: 20px; list-style: none; padding: 0; margin: 0; }
+  .foot-links a { text-decoration: none; }
+  .foot-links a:hover, .foot-links a:focus-visible { color: var(--accent); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-art { order: -1; }
+    .grid { grid-template-columns: repeat(2, 1fr); }
+    .band { grid-template-columns: 1fr; }
+    .band-art { order: -1; }
+    .strip { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+    .band-stats { grid-template-columns: 1fr; gap: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo">Seda</div>
+    <ul class="nav-links">
+      <li><a href="#colecao">Coleção</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#lookbook">Lookbook</a></li>
+    </ul>
+    <div class="nav-cta">Sacola (0)</div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div>
+      <span class="eyebrow">Coleção Verão 27</span>
+      <h1>Alfaiataria leve para<br><em>dias quentes</em></h1>
+      <p>Peças autorais em linho, viscose e seda, cortadas em São Paulo para o corpo em movimento. Produção em pequenos lotes, sem reposição em massa.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#colecao">Ver coleção</a>
+        <a class="btn btn-ghost" href="#sobre">Nosso ateliê</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ilustração de vestido midi em tons terrosos">
+        <rect width="400" height="500" fill="var(--surface-2)"/>
+        <path d="M200 60 C165 60 150 95 150 125 L150 160 C110 190 95 260 100 340 L110 460 L290 460 L300 340 C305 260 290 190 250 160 L250 125 C250 95 235 60 200 60 Z" fill="var(--accent-soft)"/>
+        <path d="M150 160 C110 190 95 260 100 340 L110 460 L200 460 L200 60 C165 60 150 95 150 125 Z" fill="var(--accent)" opacity="0.55"/>
+        <circle cx="200" cy="95" r="34" fill="var(--surface)" stroke="var(--line)" stroke-width="2"/>
+        <path d="M150 125 Q200 150 250 125" fill="none" stroke="var(--bg)" stroke-width="2" opacity="0.4"/>
+      </svg>
+    </div>
+  </section>
+
+  <section id="colecao">
+    <div class="section-head">
+      <h2>Novidades</h2>
+      <span class="count">6 peças</span>
+    </div>
+    <div class="grid" id="product-grid"></div>
+  </section>
+
+  <section class="divide" id="sobre">
+    <div class="band">
+      <div>
+        <span class="eyebrow">Desde 2019</span>
+        <h2>Feito por mãos que conhecem o tecido</h2>
+        <p>Cada peça passa por três costureiras antes de chegar até você. Trabalhamos com fornecedores de linho e seda certificados, e reaproveitamos retalhos em uma linha de acessórios à parte.</p>
+        <div class="band-stats">
+          <div>
+            <div class="stat-num">6</div>
+            <div class="stat-label">anos de ateliê</div>
+          </div>
+          <div>
+            <div class="stat-num">40</div>
+            <div class="stat-label">peças por lote</div>
+          </div>
+          <div>
+            <div class="stat-num">3</div>
+            <div class="stat-label">costureiras parceiras</div>
+          </div>
+        </div>
+      </div>
+      <div class="band-art">
+        <svg viewBox="0 0 400 400" role="img" aria-label="Ilustração de rolo de tecido">
+          <rect width="400" height="400" fill="var(--surface)"/>
+          <ellipse cx="200" cy="90" rx="70" ry="22" fill="var(--accent)" opacity="0.85"/>
+          <rect x="130" y="90" width="140" height="230" fill="var(--accent)" opacity="0.6"/>
+          <ellipse cx="200" cy="320" rx="70" ry="22" fill="var(--accent-soft)"/>
+          <path d="M160 110 Q200 130 240 110" stroke="var(--surface)" stroke-width="3" fill="none" opacity="0.5"/>
+          <path d="M160 170 Q200 190 240 170" stroke="var(--surface)" stroke-width="3" fill="none" opacity="0.5"/>
+          <path d="M160 230 Q200 250 240 230" stroke="var(--surface)" stroke-width="3" fill="none" opacity="0.5"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="divide" id="lookbook">
+    <div class="section-head">
+      <h2>Lookbook</h2>
+      <span class="count">editorial 03</span>
+    </div>
+    <div class="strip">
+      <div class="strip-item">
+        <svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice">
+          <rect width="300" height="400" fill="var(--accent)"/>
+          <rect width="300" height="400" fill="var(--fg)" opacity="0.08"/>
+          <path d="M150 50 C120 50 108 80 108 105 L108 135 C75 165 62 225 68 300 L75 400 L225 400 L232 300 C238 225 225 165 192 135 L192 105 C192 80 180 50 150 50 Z" fill="var(--surface)" opacity="0.9"/>
+        </svg>
+        <span class="strip-cap">No pátio interno</span>
+      </div>
+      <div class="strip-item">
+        <svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice">
+          <rect width="300" height="400" fill="var(--surface-2)"/>
+          <circle cx="150" cy="140" r="46" fill="var(--accent-soft)"/>
+          <rect x="90" y="186" width="120" height="190" rx="18" fill="var(--accent)" opacity="0.75"/>
+        </svg>
+        <span class="strip-cap">Linho cru</span>
+      </div>
+      <div class="strip-item">
+        <svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice">
+          <rect width="300" height="400" fill="var(--accent-soft)"/>
+          <path d="M60 400 L120 120 L180 120 L240 400 Z" fill="var(--surface)" opacity="0.85"/>
+          <circle cx="150" cy="95" r="30" fill="var(--surface)" opacity="0.85"/>
+        </svg>
+        <span class="strip-cap">Trench de viscose</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="divide">
+    <div class="news">
+      <h2>Entre na lista de acesso antecipado</h2>
+      <p>Avisamos por e-mail dois dias antes de cada lote ir ao ar — sem spam, sem promessa de desconto vazia.</p>
+      <form class="news-form" id="news-form">
+        <label for="news-email" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);">E-mail</label>
+        <input id="news-email" type="email" placeholder="seu@email.com" required>
+        <button class="btn" type="submit">Quero avisos</button>
+      </form>
+      <p class="news-note" id="news-note" aria-live="polite"></p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <div>© 2026 Seda Ateliê. Feito à mão em São Paulo.</div>
+  <ul class="foot-links">
+    <li><a href="#colecao">Coleção</a></li>
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#lookbook">Lookbook</a></li>
+  </ul>
+</footer>
+
+<script>
+(function () {
+  var products = [
+    { kind: "Vestido midi", name: "Vestido Horizonte", price: "R$ 489", pattern: "dress", tone: 1 },
+    { kind: "Blazer alfaiataria", name: "Blazer Dunas", price: "R$ 620", pattern: "blazer", tone: 2 },
+    { kind: "Calça pantalona", name: "Calça Maré", price: "R$ 340", pattern: "pants", tone: 1 },
+    { kind: "Blusa de seda", name: "Blusa Âmbar", price: "R$ 275", pattern: "blouse", tone: 2 },
+    { kind: "Saia midi", name: "Saia Argila", price: "R$ 310", pattern: "skirt", tone: 1 },
+    { kind: "Trench coat", name: "Trench Cerrado", price: "R$ 710", pattern: "coat", tone: 2 }
+  ];
+
+  function shapeFor(pattern) {
+    switch (pattern) {
+      case "dress":
+        return '<path d="M150 40 C125 40 115 65 115 88 L115 112 C85 136 72 190 78 260 L86 360 L214 360 L222 260 C228 190 215 136 185 112 L185 88 C185 65 175 40 150 40 Z" fill="var(--card-shape)"/><circle cx="150" cy="70" r="26" fill="var(--card-bg)" stroke="var(--line)" stroke-width="2"/>';
+      case "blazer":
+        return '<path d="M110 60 L150 90 L190 60 L220 95 L205 130 L205 340 L95 340 L95 130 L80 95 Z" fill="var(--card-shape)"/><rect x="140" y="95" width="20" height="200" fill="var(--card-bg)" opacity="0.5"/>';
+      case "pants":
+        return '<path d="M115 50 L225 50 L232 150 L205 340 L178 340 L170 170 L162 340 L135 340 L108 150 Z" fill="var(--card-shape)"/><rect x="115" y="50" width="110" height="26" fill="var(--card-bg)" opacity="0.5"/>';
+      case "blouse":
+        return '<path d="M150 55 L104 85 L88 120 L112 130 L120 110 L120 300 L180 300 L180 110 L188 130 L212 120 L196 85 Z" fill="var(--card-shape)"/><circle cx="150" cy="68" r="20" fill="var(--card-bg)" stroke="var(--line)" stroke-width="2"/>';
+      case "skirt":
+        return '<path d="M120 60 L180 60 L210 300 L90 300 Z" fill="var(--card-shape)"/><rect x="120" y="60" width="60" height="22" fill="var(--card-bg)" opacity="0.5"/>';
+      case "coat":
+        return '<path d="M150 45 L100 75 L82 115 L108 128 L118 100 L118 350 L182 350 L182 100 L192 128 L218 115 L200 75 Z" fill="var(--card-shape)"/><rect x="146" y="100" width="8" height="250" fill="var(--card-bg)" opacity="0.4"/><circle cx="150" cy="60" r="18" fill="var(--card-bg)" stroke="var(--line)" stroke-width="2"/>';
+      default:
+        return '';
+    }
+  }
+
+  var grid = document.getElementById("product-grid");
+  var html = "";
+  products.forEach(function (p, i) {
+    var bg = p.tone === 1 ? "var(--surface-2)" : "var(--accent-soft)";
+    var shapeColor = p.tone === 1 ? "var(--accent)" : "var(--surface)";
+    html += '' +
+      '<article class="card">' +
+        '<div class="card-art" style="background:' + bg + '">' +
+          '<svg viewBox="0 0 300 400" style="--card-shape:' + shapeColor + ';--card-bg:' + bg + '" role="img" aria-label="' + p.name + '">' +
+            shapeFor(p.pattern) +
+          '</svg>' +
+        '</div>' +
+        '<div class="card-body">' +
+          '<span class="card-kind">' + p.kind + '</span>' +
+          '<span class="card-name">' + p.name + '</span>' +
+          '<div class="card-foot">' +
+            '<span class="price">' + p.price + '</span>' +
+            '<button class="wish" aria-pressed="false" aria-label="Guardar ' + p.name + '" data-idx="' + i + '">' +
+              '<svg width="15" height="15" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none"><path d="M12 21s-7.5-4.6-10-9.3C.3 8 2 4 6 4c2.3 0 3.9 1.3 6 3.6C14.1 5.3 15.7 4 18 4c4 0 5.7 4 4 7.7C19.5 16.4 12 21 12 21Z"/></svg>' +
+            '</button>' +
+          '</div>' +
+        '</div>' +
+      '</article>';
+  });
+  grid.innerHTML = html;
+
+  grid.addEventListener("click", function (e) {
+    var btn = e.target.closest(".wish");
+    if (!btn) return;
+    var pressed = btn.getAttribute("aria-pressed") === "true";
+    btn.setAttribute("aria-pressed", String(!pressed));
+  });
+
+  var form = document.getElementById("news-form");
+  var note = document.getElementById("news-note");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    note.textContent = "Pronto — você está na lista de acesso antecipado.";
+    form.querySelector("input").value = "";
+  });
+})();
+</script>
+
+</body></html>
