@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ateliê Alvorada</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap">
+<style>
+/* Layout: texto à esquerda com título grande em itálico; à direita três arcos de altar escalonados com silhuetas. Catálogo em grade de cartões com moldura em arco. */
+:root {
+  --bg: #F2F0F5;
+  --panel: #FFFFFF;
+  --ink: #221B2D;
+  --muted: #62596E;
+  --line: #D9D3E1;
+  --accent: #7A2E4D;
+  --accent-ink: #FFFFFF;
+  --arch: #E6DFEE;
+  --focus: #2B5FD9;
+  --display: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #17121D; --panel: #211A2B; --ink: #F2EDF7; --muted: #B3A9C0; --line: #3A3048;
+    --accent: #E59BBA; --accent-ink: #2A1020; --arch: #2C2338; --focus: #8FB2FF;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #17121D; --panel: #211A2B; --ink: #F2EDF7; --muted: #B3A9C0; --line: #3A3048;
+  --accent: #E59BBA; --accent-ink: #2A1020; --arch: #2C2338; --focus: #8FB2FF;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 40px;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+.wrap { max-width: 1120px; margin: 0 auto; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 400; line-height: 1.05; text-wrap: balance; margin: 0; }
+h2 { font-size: clamp(2rem, 4vw + 1rem, 3.1rem); }
+.eyebrow { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin: 0 0 12px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 22px; border-radius: 999px; border: 1.5px solid var(--accent); background: var(--accent); color: var(--accent-ink); font: 700 .95rem var(--body); text-decoration: none; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn.small { min-height: 38px; padding: 0 16px; font-size: .88rem; }
+
+header.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); border-bottom: 1px solid var(--line); }
+header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; flex-wrap: wrap; }
+.brand { font-family: var(--display); font-size: 1.7rem; text-decoration: none; letter-spacing: .01em; }
+.brand i { color: var(--accent); }
+nav { display: flex; gap: 6px 20px; flex-wrap: wrap; font-size: .92rem; }
+nav a { text-decoration: none; color: var(--muted); padding: 6px 0; }
+nav a:hover { color: var(--ink); }
+
+.hero { padding-block: 56px 48px; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 40px; align-items: center; }
+.hero h1 { font-size: clamp(2.8rem, 7vw, 5.2rem); }
+.hero h1 em { color: var(--accent); }
+.hero p.lead { font-size: 1.12rem; color: var(--muted); max-width: 52ch; margin: 22px 0 28px; }
+.hero .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+.facts { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 34px 0 0; padding: 0; list-style: none; font-size: .9rem; color: var(--muted); }
+.facts b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.arches { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: end; }
+.arches .arc { background: var(--arch); border-radius: 999px 999px 14px 14px; padding: 22px 8px 8px; display: flex; align-items: flex-end; justify-content: center; }
+.arches .arc:nth-child(1) { height: 250px; }
+.arches .arc:nth-child(2) { height: 320px; }
+.arches .arc:nth-child(3) { height: 280px; }
+.arches svg { width: 100%; height: 100%; }
+
+section { padding-block: 56px; }
+.head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 28px; }
+.head p { color: var(--muted); max-width: 46ch; margin: 10px 0 0; }
+
+.tools { display: flex; gap: 12px 20px; flex-wrap: wrap; align-items: center; margin-bottom: 24px; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip { min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1.5px solid var(--line); background: transparent; color: var(--ink); font: 500 .92rem var(--body); cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+label.field { display: flex; flex-direction: column; gap: 6px; font-size: .84rem; font-weight: 700; color: var(--muted); }
+select, input, textarea { font: 400 1rem var(--body); color: var(--ink); background: var(--panel); border: 1.5px solid var(--line); border-radius: 10px; min-height: 44px; padding: 8px 12px; width: 100%; }
+textarea { min-height: 96px; resize: vertical; }
+.tools select { width: auto; min-width: 190px; }
+#count { margin: 0 0 0 auto; color: var(--muted); font-size: .9rem; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(236px, 1fr)); gap: 22px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 12px 12px 16px; display: flex; flex-direction: column; min-width: 0; }
+.card .frame { background: var(--arch); border-radius: 999px 999px 10px 10px; height: 250px; padding: 24px 12px 6px; }
+.card .frame svg { width: 100%; height: 100%; }
+.card .body { padding: 14px 6px 0; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.card .cat { font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.card h3 { font-size: 1.7rem; }
+.card p { margin: 0; color: var(--muted); font-size: .9rem; }
+.card .meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: auto; padding-top: 14px; flex-wrap: wrap; }
+.price { font-variant-numeric: tabular-nums; font-weight: 700; }
+.price small { font-weight: 400; color: var(--muted); }
+.empty { padding: 40px 0; color: var(--muted); }
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 18px; counter-reset: s; }
+.steps li { counter-increment: s; border-top: 2px solid var(--ink); padding-top: 14px; }
+.steps li::before { content: "Etapa " counter(s); display: block; font-size: .76rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+.steps h3 { font-size: 1.5rem; margin-bottom: 6px; }
+.steps p { margin: 0; color: var(--muted); font-size: .94rem; }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 14px 18px; border-bottom: 1px solid var(--line); font-size: .95rem; }
+th { font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+tr:last-child td { border-bottom: 0; }
+.note { color: var(--muted); font-size: .9rem; margin-top: 14px; max-width: 70ch; }
+
+.two { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 48px; }
+form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
+form .full { grid-column: 1 / -1; }
+.out { grid-column: 1 / -1; border: 1.5px dashed var(--accent); border-radius: 12px; padding: 16px; }
+.out pre { white-space: pre-wrap; word-break: break-word; font: 400 .92rem/1.55 var(--body); margin: 0 0 12px; user-select: all; }
+.out .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.out small { color: var(--muted); }
+
+details { border-bottom: 1px solid var(--line); padding: 16px 0; }
+summary { cursor: pointer; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+summary::after { content: "+"; color: var(--accent); font-size: 1.3rem; line-height: 1; }
+details[open] summary::after { content: "–"; }
+details p { margin: 10px 0 0; color: var(--muted); max-width: 64ch; }
+
+footer { border-top: 1px solid var(--line); padding-top: 32px; display: flex; gap: 24px 48px; flex-wrap: wrap; justify-content: space-between; color: var(--muted); font-size: .92rem; }
+footer b { color: var(--ink); }
+footer address { font-style: normal; }
+
+@media (max-width: 860px) {
+  .hero .wrap, .two { grid-template-columns: minmax(0, 1fr); }
+  .arches .arc:nth-child(1) { height: 190px; } .arches .arc:nth-child(2) { height: 250px; } .arches .arc:nth-child(3) { height: 220px; }
+  #count { margin-left: 0; width: 100%; }
+}
+@media (max-width: 560px) {
+  form { grid-template-columns: minmax(0, 1fr); padding: 18px; }
+  section { padding-block: 40px; }
+  nav { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#topo">Ateliê <i>Alvorada</i></a>
+    <nav aria-label="Seções">
+      <a href="#colecao">Coleção</a>
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#valores">Valores</a>
+      <a href="#reserva">Agendar prova</a>
+      <a href="#duvidas">Dúvidas</a>
+    </nav>
+  </div>
+</header>
+
+<main id="topo">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Aluguel de trajes para casamento</p>
+        <h1>O vestido do seu dia, <em>sem comprar</em> para usar uma vez.</h1>
+        <p class="lead">Vestidos de noiva, ternos, looks de madrinhas e daminhas, véus e tiaras. Prova com hora marcada, ajuste de barra incluso e lavanderia por nossa conta.</p>
+        <div class="cta">
+          <a class="btn" href="#reserva">Agendar prova</a>
+          <a class="btn ghost" href="#colecao">Ver coleção</a>
+        </div>
+        <ul class="facts">
+          <li><b>Manequim 34 ao 60</b></li>
+          <li><b>4 ou 7 dias</b> de uso</li>
+          <li><b>2 ajustes</b> de barra inclusos</li>
+        </ul>
+      </div>
+      <div class="arches" aria-hidden="true" id="heroArches"></div>
+    </div>
+  </div>
+
+  <section id="colecao">
+    <div class="wrap">
+      <div class="head">
+        <div>
+          <p class="eyebrow">Coleção</p>
+          <h2>Escolha por categoria e manequim</h2>
+        </div>
+        <p>Os valores são do plano de 4 dias. O tamanho exato é definido na prova, com a peça no corpo.</p>
+      </div>
+      <div class="tools">
+        <div class="chips" role="group" aria-label="Categoria" id="chips"></div>
+        <label class="field">Manequim
+          <select id="sizeFilter"></select>
+        </label>
+        <p id="count" aria-live="polite"></p>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section id="como-funciona">
+    <div class="wrap">
+      <div class="head"><div><p class="eyebrow">Passo a passo</p><h2>Da escolha à devolução</h2></div></div>
+      <ol class="steps">
+        <li><h3>Escolha</h3><p>Veja a coleção aqui e separe até três peças para provar.</p></li>
+        <li><h3>Prova</h3><p>Visita de 60 minutos com hora marcada. Traga os sapatos e a lingerie do dia.</p></li>
+        <li><h3>Ajuste</h3><p>A costureira marca barra e alças. Dois ajustes estão no valor do aluguel.</p></li>
+        <li><h3>Retirada</h3><p>Você leva a peça até 3 dias antes da cerimônia, já passada e embalada.</p></li>
+        <li><h3>Devolução</h3><p>Entregue até 2 dias depois. Não precisa lavar: a lavanderia é nossa.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="valores">
+    <div class="wrap">
+      <div class="head"><div><p class="eyebrow">Valores</p><h2>O que está incluso no aluguel</h2></div></div>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>Plano</th><th>Uso da peça</th><th>Valor</th><th>Inclui</th></tr></thead>
+          <tbody>
+            <tr><td>Padrão</td><td>4 dias</td><td>Preço da peça</td><td>2 ajustes, lavanderia, embalagem</td></tr>
+            <tr><td>Estendido</td><td>7 dias</td><td>Preço da peça + 30%</td><td>Tudo do padrão, para quem viaja ou faz pré-wedding</td></tr>
+            <tr><td>Caução</td><td>Até a devolução</td><td>50% do preço da peça</td><td>Devolvida em até 5 dias úteis após a conferência</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Valores de exemplo para demonstração. Troque pelos preços reais do ateliê antes de publicar.</p>
+    </div>
+  </section>
+
+  <section id="reserva">
+    <div class="wrap two">
+      <div>
+        <p class="eyebrow">Agendar prova</p>
+        <h2>Reserve a sua hora</h2>
+        <p style="color:var(--muted);max-width:40ch;margin-top:14px">Preencha os dados e copie o resumo para enviar ao ateliê. Reservas de noivas são confirmadas com pelo menos 60 dias de antecedência da data do casamento.</p>
+      </div>
+      <form id="form" novalidate>
+        <label class="field">Nome completo
+          <input id="nome" name="nome" autocomplete="name" required>
+        </label>
+        <label class="field">WhatsApp
+          <input id="zap" name="zap" inputmode="tel" autocomplete="tel" placeholder="(11) 90000-0000" required>
+        </label>
+        <label class="field">Data do casamento
+          <input id="data" name="data" type="date" required>
+        </label>
+        <label class="field">Data da prova
+          <input id="prova" name="prova" type="date" required>
+        </label>
+        <label class="field">Peça de interesse
+          <select id="peca" name="peca"></select>
+        </label>
+        <label class="field">Manequim
+          <select id="manequim" name="manequim"></select>
+        </label>
+        <label class="field full">Observações
+          <textarea id="obs" name="obs" placeholder="Estilo, cor, altura do salto, número de madrinhas"></textarea>
+        </label>
+        <div class="full"><button class="btn" type="submit">Gerar resumo do pedido</button></div>
+        <p id="erro" class="full" style="margin:0;color:var(--accent);font-weight:700" role="alert" hidden></p>
+        <div class="out" id="out" hidden>
+          <pre id="resumo"></pre>
+          <div class="row">
+            <button class="btn small" type="button" id="copiar">Copiar resumo</button>
+            <small id="copiado" aria-live="polite">Cole no WhatsApp ou no e-mail do ateliê. Este formulário não envia nada sozinho.</small>
+          </div>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section id="duvidas">
+    <div class="wrap">
+      <div class="head"><div><p class="eyebrow">Dúvidas</p><h2>Perguntas frequentes</h2></div></div>
+      <details><summary>Posso alterar o vestido?</summary><p>Barra, alças e tamanho do busto podem ser ajustados. Cortes, tingimento e aplicações novas não são permitidos, porque a peça volta para a coleção.</p></details>
+      <details><summary>E se a peça sujar ou rasgar?</summary><p>Manchas comuns de festa são resolvidas na lavanderia. Rasgos e queimaduras são avaliados na devolução e descontados da caução, no valor do conserto.</p></details>
+      <details><summary>Com quanto tempo de antecedência devo reservar?</summary><p>Vestidos de noiva, de 3 a 6 meses. Ternos e looks de madrinhas, a partir de 45 dias. Para datas de maio a outubro, reserve cedo.</p></details>
+      <details><summary>Vocês entregam em casa?</summary><p>A prova é presencial no ateliê. Retirada e devolução também, ou por motorista de aplicativo contratado por você.</p></details>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div><b>Ateliê Alvorada</b><br>Trajes para casamento por aluguel</div>
+  <address>Rua das Acácias, 120 · São Paulo, SP<br>Endereço de exemplo, substitua pelo real</address>
+  <div>Terça a sábado, 10h às 19h<br>WhatsApp: (11) 90000-0000</div>
+</footer>
+
+<script>
+(function () {
+  var INK = "var(--ink)";
+  function sk(kind, fill) {
+    var s = 'stroke="' + INK + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" fill="' + fill + '"';
+    var skirts = {
+      sereia: 'M52 62 L68 62 C72 100 78 128 98 152 L22 152 C42 128 48 100 52 62 Z',
+      princesa: 'M52 62 L68 62 C76 100 100 130 114 154 L6 154 C20 130 44 100 52 62 Z',
+      evase: 'M52 62 L68 62 L90 152 L30 152 Z',
+      aline: 'M52 62 L68 62 C74 100 86 130 96 152 L24 152 C34 130 46 100 52 62 Z',
+      madrinha: 'M52 62 L68 62 C70 100 80 130 86 148 L34 148 C40 130 50 100 52 62 Z',
+      daminha: 'M52 80 L68 80 C74 100 90 114 96 130 L24 130 C30 114 46 100 52 80 Z'
+    };
+    if (kind === 'terno' || kind === 'smoking') {
+      return '<svg viewBox="0 0 120 160" role="img" aria-label="Silhueta de traje masculino">' +
+        '<path d="M44 30 L76 30 L86 100 L34 100 Z" ' + s + '/>' +
+        '<path d="M44 100 L58 100 L56 154 L42 154 Z M62 100 L76 100 L78 154 L64 154 Z" ' + s + '/>' +
+        '<path d="M52 30 L60 70 L68 30" fill="none" stroke="' + INK + '" stroke-width="2" stroke-linejoin="round"/>' +
+        (kind === 'smoking' ? '<path d="M54 36 L60 44 L66 36 L60 30Z" fill="' + INK + '"/>' : '<path d="M60 40 L60 62" stroke="' + INK + '" stroke-width="3"/>') +
+        '</svg>';
+    }
+    if (kind === 'veu') {
+      return '<svg viewBox="0 0 120 160" role="img" aria-label="Silhueta de véu"><path d="M60 14 C86 14 94 60 100 110 C104 138 96 150 60 154 C24 150 16 138 20 110 C26 60 34 14 60 14 Z" ' + s + '/><path d="M44 20 Q60 8 76 20" fill="none" stroke="' + INK + '" stroke-width="2"/></svg>';
+    }
+    if (kind === 'tiara') {
+      return '<svg viewBox="0 0 120 160" role="img" aria-label="Silhueta de tiara"><path d="M18 108 L30 66 L44 94 L60 50 L76 94 L90 66 L102 108 Z" ' + s + '/><circle cx="60" cy="42" r="5" fill="' + INK + '"/><circle cx="30" cy="58" r="3.5" fill="' + INK + '"/><circle cx="90" cy="58" r="3.5" fill="' + INK + '"/></svg>';
+    }
+    var strap = kind === 'madrinha' ? '<path d="M54 24 L54 40 M66 24 L66 40" fill="none" stroke="' + INK + '" stroke-width="2"/>' : '';
+    var top = kind === 'daminha' ? 'M52 50 L68 50 L68 80 L52 80 Z' : 'M50 26 L70 26 L68 62 L52 62 Z';
+    return '<svg viewBox="0 0 120 160" role="img" aria-label="Silhueta de vestido">' +
+      '<path d="' + skirts[kind] + '" ' + s + '/><path d="' + top + '" ' + s + '/>' + strap + '</svg>';
+  }
+
+  var ITEMS = [
+    { id: 'aurora', name: 'Aurora', cat: 'Noivas', kind: 'sereia', color: '#EFE6D6', sizes: [36, 44], price: 890, desc: 'Sereia em crepe marfim, decote em V e cauda curta.' },
+    { id: 'helena', name: 'Helena', cat: 'Noivas', kind: 'princesa', color: '#F6F1EA', sizes: [38, 50], price: 1290, desc: 'Princesa com saia em tule e corpete estruturado.' },
+    { id: 'clara', name: 'Clara', cat: 'Noivas', kind: 'evase', color: '#F1EADF', sizes: [34, 46], price: 620, desc: 'Evasê leve para cerimônia civil ou ao ar livre.' },
+    { id: 'iris', name: 'Íris', cat: 'Noivas', kind: 'aline', color: '#E9DFD0', sizes: [38, 48], price: 980, desc: 'Linha A em renda guipure com mangas curtas.' },
+    { id: 'atlas', name: 'Terno Atlas', cat: 'Noivos', kind: 'terno', color: '#2F3E66', sizes: [46, 60], price: 380, desc: 'Azul-marinho, corte slim, colete opcional.' },
+    { id: 'orion', name: 'Smoking Órion', cat: 'Noivos', kind: 'smoking', color: '#25222B', sizes: [46, 58], price: 520, desc: 'Preto com lapela de cetim, para cerimônias à noite.' },
+    { id: 'areia', name: 'Terno Areia', cat: 'Noivos', kind: 'terno', color: '#D2BE9C', sizes: [46, 58], price: 340, desc: 'Linho cor de areia para casamento de dia.' },
+    { id: 'salvia', name: 'Sálvia', cat: 'Madrinhas', kind: 'madrinha', color: '#9DB29A', sizes: [34, 48], price: 240, desc: 'Longo verde-sálvia com fenda lateral.' },
+    { id: 'bordo', name: 'Bordô', cat: 'Madrinhas', kind: 'madrinha', color: '#7B2D45', sizes: [34, 50], price: 260, desc: 'Longo bordô em crepe com alças finas.' },
+    { id: 'petroleo', name: 'Azul Petróleo', cat: 'Madrinhas', kind: 'madrinha', color: '#2E5E66', sizes: [36, 52], price: 250, desc: 'Longo em cetim fosco, com decote canoa.' },
+    { id: 'petala', name: 'Pétala', cat: 'Daminhas', kind: 'daminha', color: '#F2D9E2', sizes: null, sizeLabel: '2 a 10 anos', price: 150, desc: 'Vestido rosa-claro com saia de tule e laço atrás.' },
+    { id: 'catedral', name: 'Véu Catedral', cat: 'Acessórios', kind: 'veu', color: '#F6F1EA', sizes: null, sizeLabel: 'Tamanho único', price: 120, desc: 'Véu de 3 metros com borda em renda.' },
+    { id: 'lunar', name: 'Tiara Lunar', cat: 'Acessórios', kind: 'tiara', color: '#D8C79A', sizes: null, sizeLabel: 'Tamanho único', price: 90, desc: 'Tiara dourada com pérolas pequenas.' }
+  ];
+  var CATS = ['Todos', 'Noivas', 'Noivos', 'Madrinhas', 'Daminhas', 'Acessórios'];
+  var state = { cat: 'Todos', size: '' };
+
+  function brl(n) { return 'R$ ' + n.toLocaleString('pt-BR'); }
+  function esc(t) { return String(t).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  // hero arches
+  var heroKinds = [['aurora'], ['helena'], ['atlas']];
+  document.getElementById('heroArches').innerHTML = ['aurora', 'helena', 'atlas'].map(function (id) {
+    var it = ITEMS.filter(function (x) { return x.id === id; })[0];
+    return '<div class="arc">' + sk(it.kind, it.color) + '</div>';
+  }).join('');
+
+  // size options
+  var sizeOpts = '';
+  for (var n = 34; n <= 60; n += 2) sizeOpts += '<option value="' + n + '">Manequim ' + n + '</option>';
+  document.getElementById('sizeFilter').innerHTML = '<option value="">Qualquer manequim</option>' + sizeOpts;
+  document.getElementById('manequim').innerHTML = '<option value="">Medir na prova</option>' + sizeOpts;
+
+  // chips
+  var chips = document.getElementById('chips');
+  chips.innerHTML = CATS.map(function (c) { return '<button type="button" class="chip" data-cat="' + c + '" aria-pressed="' + (c === 'Todos') + '">' + c + '</button>'; }).join('');
+  chips.addEventListener('click', function (e) {
+    var b = e.target.closest('.chip'); if (!b) return;
+    state.cat = b.getAttribute('data-cat');
+    Array.prototype.forEach.call(chips.children, function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+    render();
+  });
+  document.getElementById('sizeFilter').addEventListener('change', function (e) { state.size = e.target.value; render(); });
+
+  // piece select
+  document.getElementById('peca').innerHTML = '<option value="">Ainda não sei</option>' + ITEMS.map(function (i) { return '<option value="' + i.id + '">' + esc(i.name) + ' (' + i.cat.toLowerCase() + ')</option>'; }).join('');
+
+  function render() {
+    var list = ITEMS.filter(function (i) {
+      if (state.cat !== 'Todos' && i.cat !== state.cat) return false;
+      if (state.size && i.sizes) { var s = +state.size; if (s < i.sizes[0] || s > i.sizes[1]) return false; }
+      return true;
+    });
+    document.getElementById('count').textContent = list.length + (list.length === 1 ? ' peça' : ' peças');
+    var grid = document.getElementById('grid');
+    if (!list.length) { grid.innerHTML = '<p class="empty">Nenhuma peça nesse manequim e categoria. Tente outro tamanho ou fale com o ateliê: fazemos ajustes de até 2 numerações.</p>'; return; }
+    grid.innerHTML = list.map(function (i) {
+      var tam = i.sizes ? 'Manequim ' + i.sizes[0] + ' ao ' + i.sizes[1] : i.sizeLabel;
+      return '<article class="card"><div class="frame">' + sk(i.kind, i.color) + '</div><div class="body">' +
+        '<span class="cat">' + i.cat + '</span><h3>' + esc(i.name) + '</h3><p>' + esc(i.desc) + '</p><p>' + tam + '</p>' +
+        '<div class="meta"><span class="price">' + brl(i.price) + ' <small>/ 4 dias</small></span>' +
+        '<button type="button" class="btn small ghost" data-pick="' + i.id + '">Provar esta</button></div></div></article>';
+    }).join('');
+  }
+  document.getElementById('grid').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-pick]'); if (!b) return;
+    document.getElementById('peca').value = b.getAttribute('data-pick');
+    var f = document.getElementById('reserva');
+    f.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(function () { document.getElementById('nome').focus({ preventScroll: true }); }, 400);
+  });
+  render();
+
+  // dates
+  var today = new Date().toLocaleDateString('sv');
+  document.getElementById('data').min = today;
+  document.getElementById('prova').min = today;
+
+  function fdate(v) { if (!v) return ''; var p = v.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; }
+
+  document.getElementById('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var g = function (id) { return document.getElementById(id).value.trim(); };
+    var erro = document.getElementById('erro');
+    var falta = [];
+    if (!g('nome')) falta.push('nome');
+    if (g('zap').replace(/\D/g, '').length < 10) falta.push('WhatsApp com DDD');
+    if (!g('data')) falta.push('data do casamento');
+    if (!g('prova')) falta.push('data da prova');
+    if (falta.length) { erro.textContent = 'Preencha: ' + falta.join(', ') + '.'; erro.hidden = false; document.getElementById('out').hidden = true; return; }
+    if (g('prova') > g('data')) { erro.textContent = 'A data da prova precisa ser antes do casamento.'; erro.hidden = false; document.getElementById('out').hidden = true; return; }
+    erro.hidden = true;
+    var it = ITEMS.filter(function (x) { return x.id === g('peca'); })[0];
+    var lines = [
+      'Pedido de prova · Ateliê Alvorada',
+      'Nome: ' + g('nome'),
+      'WhatsApp: ' + g('zap'),
+      'Casamento: ' + fdate(g('data')),
+      'Prova desejada: ' + fdate(g('prova')),
+      'Peça: ' + (it ? it.name + ' (' + brl(it.price) + ' / 4 dias)' : 'ainda não definida'),
+      'Manequim: ' + (g('manequim') || 'medir na prova')
+    ];
+    if (g('obs')) lines.push('Observações: ' + g('obs'));
+    document.getElementById('resumo').textContent = lines.join('\n');
+    document.getElementById('out').hidden = false;
+    document.getElementById('copiado').textContent = 'Cole no WhatsApp ou no e-mail do ateliê. Este formulário não envia nada sozinho.';
+  });
+
+  document.getElementById('copiar').addEventListener('click', function () {
+    var pre = document.getElementById('resumo');
+    var msg = document.getElementById('copiado');
+    function fallback() {
+      var r = document.createRange(); r.selectNodeContents(pre);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      msg.textContent = 'Texto selecionado. Use copiar do seu aparelho.';
+    }
+    try {
+      navigator.clipboard.writeText(pre.textContent).then(function () { msg.textContent = 'Resumo copiado.'; }, fallback);
+    } catch (err) { fallback(); }
+  });
+})();
+</script>
+
+</body>
+</html>
