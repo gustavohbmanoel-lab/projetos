@@ -1,0 +1,428 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Marcha Leve Locadora</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: cabeçalho enxuto, hero com simulador ao lado do texto, frota em grade, tabela de valores, passos e perguntas. */
+:root {
+  --bg: #f3f4f1;
+  --surface: #ffffff;
+  --fg: #16232b;
+  --muted: #5a6a72;
+  --line: #d9ddd8;
+  --brand: #0f4c5c;
+  --brand-fg: #ffffff;
+  --accent: #f2a900;
+  --accent-fg: #1b1500;
+  --good: #1f7a4d;
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f171c; --surface: #17232a; --fg: #eaf0ee; --muted: #9db0b8; --line: #2a3a43;
+    --brand: #4fb0c6; --brand-fg: #06161b; --accent: #f2b52c; --accent-fg: #1b1500; --good: #5fd09a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f171c; --surface: #17232a; --fg: #eaf0ee; --muted: #9db0b8; --line: #2a3a43;
+  --brand: #4fb0c6; --brand-fg: #06161b; --accent: #f2b52c; --accent-fg: #1b1500; --good: #5fd09a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 40px;
+}
+.wrap { max-width: 1120px; margin: 0 auto; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.12; margin: 0; text-wrap: balance; }
+h2 { font-size: clamp(1.5rem, 3.4vw, 2.1rem); }
+h3 { font-size: 1.1rem; }
+p { margin: 0; }
+.eyebrow { font-size: .78rem; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+a { color: var(--brand); }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+header.top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 18px; }
+.logo { font-family: var(--font-display); font-weight: 700; font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
+.logo i { width: 30px; height: 30px; border-radius: 8px; background: var(--brand); display: grid; place-items: center; }
+.logo i svg { width: 20px; height: 20px; }
+nav { display: flex; gap: 18px; flex-wrap: wrap; font-size: .95rem; }
+nav a { color: var(--fg); text-decoration: none; font-weight: 500; }
+nav a:hover { text-decoration: underline; }
+
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 32px; align-items: start; padding-block: 24px 48px; }
+.hero h1 { font-size: clamp(2rem, 5.4vw, 3.3rem); }
+.hero h1 em { font-style: normal; background: var(--accent); color: var(--accent-fg); padding: 0 .18em; border-radius: 6px; white-space: nowrap; }
+.hero .lead { color: var(--muted); margin-top: 16px; max-width: 52ch; font-size: 1.05rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+.chip { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 6px 12px; font-size: .88rem; font-weight: 500; }
+.hero-car { margin-top: 28px; color: var(--brand); max-width: 420px; }
+.hero-car svg { width: 100%; height: auto; display: block; }
+
+.sim { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 22px; box-shadow: 0 8px 30px rgba(15,35,43,.08); min-width: 0; }
+.sim h2 { font-size: 1.35rem; margin-bottom: 4px; }
+.sim .sub { color: var(--muted); font-size: .9rem; margin-bottom: 16px; }
+.field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; min-width: 0; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+label, .lbl { font-size: .82rem; font-weight: 600; }
+select, input[type=date], input[type=text], input[type=tel] {
+  font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 11px; width: 100%; min-width: 0;
+}
+.opts { display: grid; gap: 8px; margin-bottom: 14px; }
+.opt { display: flex; gap: 10px; align-items: flex-start; font-size: .9rem; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; cursor: pointer; background: var(--bg); }
+.opt input { margin-top: 4px; accent-color: var(--brand); }
+.opt span b { font-weight: 600; }
+.opt small { display: block; color: var(--muted); }
+fieldset { border: 0; padding: 0; margin: 0 0 6px; min-width: 0; }
+legend { font-size: .82rem; font-weight: 600; padding: 0; margin-bottom: 6px; }
+
+.total { border-top: 1px dashed var(--line); padding-top: 14px; margin-top: 4px; }
+.line { display: flex; justify-content: space-between; gap: 12px; font-size: .92rem; padding: 2px 0; font-variant-numeric: tabular-nums; }
+.line.disc { color: var(--good); }
+.line.big { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; padding-top: 8px; }
+.note { color: var(--muted); font-size: .8rem; margin-top: 6px; }
+.btn { font: inherit; font-weight: 600; border: 0; border-radius: 10px; padding: 12px 16px; cursor: pointer; background: var(--accent); color: var(--accent-fg); width: 100%; margin-top: 12px; }
+.btn:hover { filter: brightness(1.05); }
+.btn.alt { background: transparent; color: var(--brand); border: 1.5px solid var(--brand); margin-top: 8px; }
+.resume { display: none; margin-top: 14px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); padding: 12px; }
+.resume.on { display: block; }
+.resume textarea { width: 100%; min-height: 150px; font: .82rem/1.45 ui-monospace, Menlo, Consolas, monospace; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 8px; resize: vertical; }
+
+section { padding-block: 40px; }
+.head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.filters button { font: inherit; font-size: .88rem; font-weight: 500; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--brand); color: var(--brand-fg); border-color: var(--brand); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; }
+.car { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.car .pic { border-radius: 8px; background: var(--bg); padding: 10px 14px; }
+.car .pic svg { width: 100%; height: auto; display: block; }
+.car .cat { font-size: .74rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.car h3 { font-size: 1.12rem; }
+.specs { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: .84rem; color: var(--muted); list-style: none; margin: 0; padding: 0; }
+.price { margin-top: auto; display: flex; align-items: baseline; gap: 6px; padding-top: 6px; }
+.price b { font-family: var(--font-display); font-size: 1.7rem; font-variant-numeric: tabular-nums; }
+.price span { color: var(--muted); font-size: .85rem; }
+.car .btn { margin-top: 4px; padding: 10px 14px; }
+
+.tablebox { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-variant-numeric: tabular-nums; }
+th, td { text-align: right; padding: 12px 14px; border-bottom: 1px solid var(--line); font-size: .93rem; }
+th:first-child, td:first-child { text-align: left; }
+thead th { font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+tbody tr:last-child td { border-bottom: 0; }
+td .sm { display: block; color: var(--muted); font-size: .78rem; }
+
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; padding: 0; margin: 0; list-style: none; counter-reset: s; }
+.steps li { counter-increment: s; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.steps li::before { content: counter(s); font-family: var(--font-display); font-weight: 700; width: 30px; height: 30px; border-radius: 50%; background: var(--brand); color: var(--brand-fg); display: grid; place-items: center; }
+
+details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; }
+details + details { margin-top: 10px; }
+summary { cursor: pointer; font-weight: 600; }
+details p { color: var(--muted); margin-top: 8px; }
+
+footer { border-top: 1px solid var(--line); padding-top: 24px; display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; color: var(--muted); font-size: .9rem; }
+footer b { color: var(--fg); }
+
+@media (max-width: 860px) { .hero { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 420px) { .row2 { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: no-preference) { .btn, .car { transition: transform .15s ease; } .car:hover { transform: translateY(-2px); } }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="hatch" viewBox="0 0 170 72">
+      <path fill="currentColor" d="M6 50 L10 38 Q13 31 22 30 L46 27 Q56 14 76 14 L106 14 Q124 16 134 31 L152 35 Q162 37 163 46 L163 52 L6 52 Z"/>
+      <path fill="var(--bg)" opacity=".92" d="M54 28 Q61 19 76 19 L92 19 L92 29 Z M98 19 L106 19 Q118 20 125 29 L98 29 Z"/>
+      <circle cx="43" cy="53" r="10" fill="var(--fg)"/><circle cx="43" cy="53" r="4" fill="var(--bg)"/>
+      <circle cx="126" cy="53" r="10" fill="var(--fg)"/><circle cx="126" cy="53" r="4" fill="var(--bg)"/>
+    </symbol>
+    <symbol id="sedan" viewBox="0 0 170 72">
+      <path fill="currentColor" d="M4 50 L8 40 Q11 34 20 33 L44 30 Q54 15 76 15 L104 15 Q122 17 132 31 L156 35 Q166 37 167 46 L167 52 L4 52 Z"/>
+      <path fill="var(--bg)" opacity=".92" d="M52 30 Q60 20 76 20 L92 20 L92 30 Z M98 20 L104 20 Q116 21 124 30 L98 30 Z"/>
+      <circle cx="41" cy="53" r="10" fill="var(--fg)"/><circle cx="41" cy="53" r="4" fill="var(--bg)"/>
+      <circle cx="132" cy="53" r="10" fill="var(--fg)"/><circle cx="132" cy="53" r="4" fill="var(--bg)"/>
+    </symbol>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="top">
+    <div class="logo"><i aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l2-6h12l2 6M3 16h18v3H3zM7 19v1M17 19v1"/></svg></i>Marcha Leve</div>
+    <nav aria-label="Principal">
+      <a href="#frota">Frota</a><a href="#valores">Valores</a><a href="#como">Como alugar</a><a href="#duvidas">Dúvidas</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero">
+      <div>
+        <p class="eyebrow">Aluguel de carros populares</p>
+        <h1 style="margin-top:10px">Carro rodando por <em id="minPrice">R$ 89</em> a diária</h1>
+        <p class="lead">Hatches e sedãs 1.0 com ar-condicionado, 150 km por dia inclusos e proteção básica. Quanto mais dias, menor a diária: 10% a partir de 7 dias e 20% a partir de 30.</p>
+        <div class="chips">
+          <span class="chip">150 km/dia inclusos</span>
+          <span class="chip">Proteção básica incluída</span>
+          <span class="chip">Retirada no mesmo dia</span>
+          <span class="chip">Sem taxa de reserva</span>
+        </div>
+        <div class="hero-car" aria-hidden="true"><svg viewBox="0 0 170 72"><use href="#hatch"/></svg></div>
+      </div>
+
+      <form class="sim" id="sim" aria-labelledby="simTitle">
+        <h2 id="simTitle">Simule sua reserva</h2>
+        <p class="sub">Escolha o carro e as datas. O valor aparece na hora.</p>
+        <div class="field">
+          <label for="carSel">Carro</label>
+          <select id="carSel"></select>
+        </div>
+        <div class="row2">
+          <div class="field"><label for="d1">Retirada</label><input type="date" id="d1"></div>
+          <div class="field"><label for="d2">Devolução</label><input type="date" id="d2"></div>
+        </div>
+
+        <fieldset>
+          <legend>Proteção</legend>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="prot" value="0" checked><span><b>Básica</b> (incluída)<small>Franquia de R$ 2.500</small></span></label>
+            <label class="opt"><input type="radio" name="prot" value="22"><span><b>Reduzida</b> + R$ 22/dia<small>Franquia de R$ 800</small></span></label>
+            <label class="opt"><input type="radio" name="prot" value="38"><span><b>Completa</b> + R$ 38/dia<small>Sem franquia</small></span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Extras</legend>
+          <div class="opts">
+            <label class="opt"><input type="checkbox" id="xKm" data-day="20"><span><b>Km livre</b> + R$ 20/dia<small>Sem limite de quilometragem</small></span></label>
+            <label class="opt"><input type="checkbox" id="xDriver" data-day="15"><span><b>Motorista adicional</b> + R$ 15/dia</span></label>
+            <label class="opt"><input type="checkbox" id="xSeat" data-day="12"><span><b>Cadeirinha infantil</b> + R$ 12/dia</span></label>
+          </div>
+        </fieldset>
+
+        <div class="total" aria-live="polite">
+          <div class="line"><span id="lDaily">Diárias</span><span id="vDaily"></span></div>
+          <div class="line disc" id="rowDisc"><span id="lDisc"></span><span id="vDisc"></span></div>
+          <div class="line"><span>Proteção</span><span id="vProt"></span></div>
+          <div class="line"><span>Extras</span><span id="vExtra"></span></div>
+          <div class="line big"><span>Total</span><span id="vTotal"></span></div>
+          <p class="note" id="nPer"></p>
+          <p class="note">Caução de R$ 600 no cartão de crédito, liberada na devolução.</p>
+        </div>
+        <button class="btn" type="submit">Gerar resumo da reserva</button>
+        <div class="resume" id="resume">
+          <p class="lbl" style="margin-bottom:6px">Copie e envie para a locadora</p>
+          <textarea id="resumeTxt" readonly></textarea>
+          <button class="btn alt" type="button" id="copyBtn">Copiar resumo</button>
+          <p class="note" id="copyMsg" role="status"></p>
+        </div>
+      </form>
+    </div>
+
+    <section id="frota">
+      <div class="head">
+        <div><p class="eyebrow">Frota</p><h2 style="margin-top:6px">Escolha o seu popular</h2></div>
+        <div class="filters" id="filters" role="group" aria-label="Filtrar por categoria"></div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <p class="note" style="margin-top:12px">Modelos ou similares, conforme disponibilidade no pátio.</p>
+    </section>
+
+    <section id="valores">
+      <div class="head"><div><p class="eyebrow">Tabela de valores</p><h2 style="margin-top:6px">Quanto custa por período</h2></div></div>
+      <div class="tablebox">
+        <table>
+          <thead><tr><th>Carro</th><th>Diária (1 a 6 dias)</th><th>Diária (7 a 29 dias)</th><th>Diária (30+ dias)</th><th>Semana (7 dias)</th><th>Mês (30 dias)</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top:10px">Valores em reais, já com a proteção básica e 150 km por dia. Diária calculada por dia corrido, de retirada a devolução no mesmo horário.</p>
+    </section>
+
+    <section id="como">
+      <div class="head"><div><p class="eyebrow">Como alugar</p><h2 style="margin-top:6px">Da reserva à estrada em três passos</h2></div></div>
+      <ol class="steps">
+        <li><h3>Simule e reserve</h3><p>Escolha o carro, as datas e os extras. Envie o resumo pelo contato da locadora.</p></li>
+        <li><h3>Mostre os documentos</h3><p>CNH válida há pelo menos 2 anos, CPF, comprovante de residência e cartão de crédito em nome do condutor.</p></li>
+        <li><h3>Retire e dirija</h3><p>Vistoria rápida, caução no cartão e chave na mão. Devolva com o mesmo nível de combustível.</p></li>
+      </ol>
+    </section>
+
+    <section id="duvidas">
+      <div class="head"><div><p class="eyebrow">Dúvidas</p><h2 style="margin-top:6px">Perguntas frequentes</h2></div></div>
+      <details open><summary>Qual a idade mínima para alugar?</summary><p>21 anos, com CNH definitiva e pelo menos 2 anos de habilitação. Condutores de 21 a 24 anos pagam uma taxa de jovem condutor.</p></details>
+      <details><summary>O que acontece se eu passar dos 150 km por dia?</summary><p>Cada km excedente é cobrado à parte. Para viagens longas, marque Km livre no simulador.</p></details>
+      <details><summary>Posso devolver o carro em outro dia ou horário?</summary><p>Atrasos de até 1 hora são tolerados. Depois disso, cobra-se uma diária proporcional. Para antecipar ou prorrogar, avise a locadora.</p></details>
+      <details><summary>Como funciona o combustível?</summary><p>O carro sai com o tanque cheio e deve voltar cheio. Se voltar com menos, o combustível faltante é cobrado.</p></details>
+    </section>
+  </main>
+
+  <footer>
+    <div><b>Marcha Leve Locadora</b><br>Exemplo de site. Troque nome, endereço e contatos pelos dados reais.</div>
+    <div>WhatsApp: (11) 90000-0000<br>Atendimento: seg a sáb, 8h às 18h</div>
+    <div>Rua Exemplo, 123, Centro<br>Mauá, SP</div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var CARS = [
+    { id: "kwid",   name: "Renault Kwid 1.0",        cat: "Econômico", body: "hatch", gear: "Manual",     seats: 5, bags: "Mala 290 L", price: 89,  color: "#d9552b" },
+    { id: "mobi",   name: "Fiat Mobi 1.0",           cat: "Econômico", body: "hatch", gear: "Manual",     seats: 4, bags: "Mala 215 L", price: 92,  color: "#7a8a93" },
+    { id: "argo",   name: "Fiat Argo 1.0",           cat: "Hatch",     body: "hatch", gear: "Manual",     seats: 5, bags: "Mala 300 L", price: 109, color: "#c0392b" },
+    { id: "polo",   name: "VW Polo Track 1.0",       cat: "Hatch",     body: "hatch", gear: "Manual",     seats: 5, bags: "Mala 300 L", price: 119, color: "#2f6f9f" },
+    { id: "hb20",   name: "Hyundai HB20 1.0",        cat: "Hatch",     body: "hatch", gear: "Manual",     seats: 5, bags: "Mala 300 L", price: 115, color: "#4b4f56" },
+    { id: "onixat", name: "Chevrolet Onix 1.0 Turbo", cat: "Automático", body: "hatch", gear: "Automático", seats: 5, bags: "Mala 275 L", price: 139, color: "#2c7a5b" },
+    { id: "cronos", name: "Fiat Cronos 1.3",         cat: "Sedã",      body: "sedan", gear: "Manual",     seats: 5, bags: "Mala 525 L", price: 129, color: "#8e44ad" },
+    { id: "plus",   name: "Chevrolet Onix Plus 1.0 Turbo", cat: "Automático", body: "sedan", gear: "Automático", seats: 5, bags: "Mala 469 L", price: 149, color: "#b9770e" }
+  ];
+  var CATS = ["Todos", "Econômico", "Hatch", "Sedã", "Automático"];
+  var brl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+  function money(v) { return brl.format(Math.round(v * 100) / 100); }
+  function rate(c, days) { return c.price * (days >= 30 ? 0.8 : days >= 7 ? 0.9 : 1); }
+  function $(id) { return document.getElementById(id); }
+  function byId(id) { return CARS.filter(function (c) { return c.id === id; })[0]; }
+
+  var minP = Math.min.apply(null, CARS.map(function (c) { return c.price; }));
+  $("minPrice").textContent = money(minP).replace(",00", "");
+
+  // seletor
+  var sel = $("carSel");
+  CARS.forEach(function (c) {
+    var o = document.createElement("option");
+    o.value = c.id; o.textContent = c.name + " — " + money(c.price) + "/dia";
+    sel.appendChild(o);
+  });
+
+  // filtros e frota
+  var current = "Todos";
+  var fbox = $("filters");
+  CATS.forEach(function (name) {
+    var b = document.createElement("button");
+    b.type = "button"; b.textContent = name; b.setAttribute("aria-pressed", name === current ? "true" : "false");
+    b.addEventListener("click", function () {
+      current = name;
+      Array.prototype.forEach.call(fbox.children, function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      renderGrid();
+    });
+    fbox.appendChild(b);
+  });
+
+  function renderGrid() {
+    var g = $("grid"); g.innerHTML = "";
+    CARS.filter(function (c) { return current === "Todos" || c.cat === current; }).forEach(function (c) {
+      var d = document.createElement("article");
+      d.className = "car";
+      d.innerHTML =
+        '<div class="pic" style="color:' + c.color + '"><svg viewBox="0 0 170 72" role="img" aria-label="' + c.name + '"><use href="#' + c.body + '"/></svg></div>' +
+        '<span class="cat">' + c.cat + '</span><h3>' + c.name + '</h3>' +
+        '<ul class="specs"><li>' + c.gear + '</li><li>' + c.seats + ' lugares</li><li>' + c.bags + '</li><li>Ar-condicionado</li></ul>' +
+        '<div class="price"><b>' + money(c.price) + '</b><span>por dia</span></div>' +
+        '<button class="btn" type="button" data-id="' + c.id + '">Simular este carro</button>';
+      g.appendChild(d);
+    });
+  }
+  $("grid").addEventListener("click", function (e) {
+    var t = e.target.closest("button[data-id]");
+    if (!t) return;
+    sel.value = t.getAttribute("data-id");
+    calc();
+    $("sim").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+
+  // tabela
+  $("tbody").innerHTML = CARS.map(function (c) {
+    return "<tr><td>" + c.name + '<span class="sm">' + c.cat + " · " + c.gear + "</span></td>" +
+      "<td>" + money(rate(c, 1)) + "</td><td>" + money(rate(c, 7)) + "</td><td>" + money(rate(c, 30)) + "</td>" +
+      "<td><b>" + money(rate(c, 7) * 7) + "</b></td><td><b>" + money(rate(c, 30) * 30) + "</b></td></tr>";
+  }).join("");
+
+  // datas padrão
+  function iso(d) { var m = ("0" + (d.getMonth() + 1)).slice(-2), day = ("0" + d.getDate()).slice(-2); return d.getFullYear() + "-" + m + "-" + day; }
+  function parse(s) { var p = s.split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  var t0 = new Date(); t0.setHours(0, 0, 0, 0);
+  var a = new Date(t0); a.setDate(a.getDate() + 1);
+  var b = new Date(a); b.setDate(b.getDate() + 3);
+  $("d1").value = iso(a); $("d2").value = iso(b); $("d1").min = iso(t0); $("d2").min = iso(a);
+
+  var last = null;
+  function calc() {
+    var c = byId(sel.value);
+    var s1 = $("d1").value, s2 = $("d2").value;
+    var days = 1;
+    if (s1 && s2) {
+      days = Math.round((parse(s2) - parse(s1)) / 86400000);
+      if (days < 1) days = 1;
+    }
+    var base = c.price * days;
+    var perDay = rate(c, days);
+    var disc = base - perDay * days;
+    var protDay = +document.querySelector('input[name="prot"]:checked').value;
+    var prot = protDay * days;
+    var extraDay = 0, extras = [];
+    [["xKm", "Km livre"], ["xDriver", "Motorista adicional"], ["xSeat", "Cadeirinha"]].forEach(function (x) {
+      var el = $(x[0]);
+      if (el.checked) { extraDay += +el.getAttribute("data-day"); extras.push(x[1]); }
+    });
+    var extra = extraDay * days;
+    var total = perDay * days + prot + extra;
+
+    $("lDaily").textContent = days + (days === 1 ? " diária" : " diárias") + " × " + money(c.price);
+    $("vDaily").textContent = money(base);
+    $("rowDisc").style.display = disc > 0 ? "flex" : "none";
+    $("lDisc").textContent = "Desconto de " + (days >= 30 ? "20" : "10") + "% por período";
+    $("vDisc").textContent = "− " + money(disc);
+    $("vProt").textContent = protDay ? money(prot) : "Incluída";
+    $("vExtra").textContent = extra ? money(extra) : "—";
+    $("vTotal").textContent = money(total);
+    $("nPer").textContent = "Média de " + money(total / days) + " por dia, com tudo incluído.";
+    var protName = protDay === 38 ? "Completa" : protDay === 22 ? "Reduzida" : "Básica";
+    last = { c: c, days: days, total: total, protName: protName, extras: extras, s1: s1, s2: s2 };
+  }
+  function br(s) { var p = s.split("-"); return p[2] + "/" + p[1] + "/" + p[0]; }
+
+  $("sim").addEventListener("input", calc);
+  $("sim").addEventListener("change", function (e) {
+    if (e.target.id === "d1" && $("d1").value) {
+      $("d2").min = $("d1").value;
+      if (!$("d2").value || $("d2").value <= $("d1").value) {
+        var n = parse($("d1").value); n.setDate(n.getDate() + 1); $("d2").value = iso(n);
+      }
+      calc();
+    }
+  });
+  $("sim").addEventListener("submit", function (e) {
+    e.preventDefault(); calc();
+    var r = last;
+    $("resumeTxt").value =
+      "Pedido de reserva — Marcha Leve\n" +
+      "Carro: " + r.c.name + " (ou similar)\n" +
+      "Retirada: " + br(r.s1) + "\nDevolução: " + br(r.s2) + " (" + r.days + (r.days === 1 ? " diária" : " diárias") + ")\n" +
+      "Proteção: " + r.protName + "\n" +
+      "Extras: " + (r.extras.length ? r.extras.join(", ") : "nenhum") + "\n" +
+      "Total estimado: " + money(r.total) + "\n" +
+      "Nome: \nTelefone: ";
+    $("resume").className = "resume on";
+    $("copyMsg").textContent = "";
+    $("resume").scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+  $("copyBtn").addEventListener("click", function () {
+    var ta = $("resumeTxt");
+    function fallback() { ta.focus(); ta.select(); $("copyMsg").textContent = "Texto selecionado. Use Copiar do seu aparelho."; }
+    try {
+      navigator.clipboard.writeText(ta.value).then(function () { $("copyMsg").textContent = "Resumo copiado."; }, fallback);
+    } catch (err) { fallback(); }
+  });
+
+  renderGrid();
+  calc();
+})();
+</script>
+
+</body></html>
